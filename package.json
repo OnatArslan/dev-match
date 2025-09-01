@@ -15,5 +15,14 @@
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnatArslan/dev-match.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OnatArslan/dev-match/issues"
+  },
+  "homepage": "https://github.com/OnatArslan/dev-match#readme"
 }
