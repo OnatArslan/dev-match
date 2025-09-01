@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon src/server.mjs",
     "start": "node src/server.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
