@@ -1,6 +1,6 @@
 import http from 'node:http';
-import { app } from './app.mjs';
-import { logger } from './lib/logger.mjs';
+import app from './app.mjs';
+import logger from './lib/logger.mjs';
 
 // ENV ve PORT degiskenleri rahat kullanim icin
 const ENV = process.env.NODE_ENV || 'development';

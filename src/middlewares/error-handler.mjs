@@ -1,9 +1,9 @@
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
-import { logger } from '../lib/logger.mjs';
+import logger from '../lib/logger.mjs';
 
 const isProd = process.env.NODE_ENV === 'production';
 
-export function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res, next) {
   if (res.headersSent) return next(err);
 
   let status = Number(err.statusCode || err.status || StatusCodes.INTERNAL_SERVER_ERROR);
@@ -32,3 +32,5 @@ export function errorHandler(err, req, res, next) {
 
   res.status(status).json(payload);
 }
+
+export default errorHandler;

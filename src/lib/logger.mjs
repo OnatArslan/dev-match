@@ -2,7 +2,7 @@ import winston from 'winston';
 
 const isProd = process.env.NODE_ENV === 'production';
 
-export const logger = winston.createLogger({
+const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || (isProd ? 'info' : 'debug'),
   format: winston.format.combine(
     winston.format.timestamp(),
@@ -11,3 +11,5 @@ export const logger = winston.createLogger({
   ),
   transports: [new winston.transports.Console()],
 });
+
+export default logger;

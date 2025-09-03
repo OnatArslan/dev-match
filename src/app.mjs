@@ -10,11 +10,11 @@ import crypto from 'node:crypto';
 import { StatusCodes } from 'http-status-codes';
 import cookieParser from 'cookie-parser';
 
-import { logger } from './lib/logger.mjs';
-import { notFoundHandler } from './middlewares/not-found.mjs';
-import { errorHandler } from './middlewares/error-handler.mjs';
+import logger from './lib/logger.mjs';
+import notFoundHandler from './middlewares/not-found.mjs';
+import errorHandler from './middlewares/error-handler.mjs';
 
-export const app = express();
+const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 
 /* ───────────────────────────── App basics ───────────────────────────── */
@@ -111,3 +111,5 @@ app.get('/health', (_req, res) => {
 /* ─────────────── Not Found & Error ─────────────── */
 app.use(notFoundHandler); // eşleşmeyen tüm istekler buraya düşer
 app.use(errorHandler); // tüm hatalar burada sonlanır
+
+export default app;
