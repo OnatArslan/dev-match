@@ -3,7 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import crypto from 'node:crypto';
@@ -64,9 +63,6 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 
 app.use(cookieParser());
-
-// hpp yi body parserlardan sonra kullanmak gerek
-app.use(hpp({ checkBody: true }));
 
 /* ─────────────── Request ID + HTTP Logger ─────────────── */
 app.use((req, _res, next) => {
