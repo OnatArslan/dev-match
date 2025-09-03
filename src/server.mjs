@@ -1,6 +1,7 @@
 import http from 'node:http';
 import app from './app.mjs';
 import logger from './lib/logger.mjs';
+import chalk from 'chalk';
 
 // ENV ve PORT degiskenleri rahat kullanim icin
 const ENV = process.env.NODE_ENV || 'development';
@@ -17,6 +18,19 @@ server.listen(PORT, () => {
     env: ENV,
     port: PORT,
   });
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(
+      chalk.green.bold('🚀 DevMatch server is up and running!') +
+        '\n' +
+        chalk.cyan(`   ➜  Local:   `) +
+        chalk.white(`http://localhost:${PORT}/`) +
+        '\n' +
+        chalk.cyan(`   ➜  Health:  `) +
+        chalk.white(`http://localhost:${PORT}/health`) +
+        '\n' +
+        chalk.gray(`   (Press CTRL+C to quit)\n`),
+    );
+  }
 });
 
 // Sunucu hataları (örn. EADDRINUSE, EACCES)

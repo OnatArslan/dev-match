@@ -13,7 +13,7 @@ export default [
       globals: { console: 'readonly', process: 'readonly', setTimeout: 'readonly' },
     },
     rules: {
-      'no-console': 'warn',
+      'no-console': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
