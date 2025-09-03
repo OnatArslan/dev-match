@@ -10,7 +10,7 @@ export default [
       ecmaVersion: 'latest',
       sourceType: 'module',
       // Node global'ları (eslint'e "bunlar var" de)
-      globals: { console: 'readonly', process: 'readonly' },
+      globals: { console: 'readonly', process: 'readonly', setTimeout: 'readonly' },
     },
     rules: {
       'no-console': 'warn',
