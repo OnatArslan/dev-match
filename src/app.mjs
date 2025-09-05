@@ -101,8 +101,9 @@ app.get('/health', (_req, res) => {
 });
 
 /* ─────────────── (Import Routers Here) ─────────────── */
-/* ─────────────── (Routes) ─────────────── */
-// örn: app.use('/api/auth', authRoutes);
+import { userRouter } from './modules/user/index.mjs';
+/* ─────────────── (Using Routers) ─────────────── */
+app.use('/user', userRouter);
 
 /* ─────────────── Not Found & Error ─────────────── */
 app.use(notFoundHandler); // eşleşmeyen tüm istekler buraya düşer
