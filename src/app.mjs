@@ -110,5 +110,5 @@ app.use('/auth', authRouter);
 /* ─────────────── Not Found & Error ─────────────── */
 app.use(notFoundHandler); // eşleşmeyen tüm istekler buraya düşer
 app.use(errorHandler); // tüm hatalar burada sonlanır
-
+console.log(`hello world`);
 export default app;
