@@ -72,7 +72,7 @@ app.use((req, _res, next) => {
 
 const morganStream = { write: (msg) => logger.info(msg.trim(), { channel: 'http' }) };
 app.use(
-  morgan(isProd ? 'combined' : 'dev', {
+  morgan(isProd ? `combined` : `dev`, {
     stream: morganStream,
     skip: (req) => req.path === '/health',
   }),

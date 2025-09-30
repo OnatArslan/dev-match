@@ -21,7 +21,7 @@ function errorHandler(err, req, res, next) {
     path: req.originalUrl,
     method: req.method,
   };
-
+  if (status === 404) err.stack = ``;
   if (!isProd) payload.stack = err.stack;
 
   logger.error(`${req.method} ${req.originalUrl} -> ${status} ${message}`, {
