@@ -4,4 +4,7 @@ model User {
   name    String?
   posts   Post[]
   profile Profile?
+  test String
+  test2 String[]
+  test3 String[]
 }
