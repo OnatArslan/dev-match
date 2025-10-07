@@ -13,3 +13,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// Because we are using multi schema file we need to use this cli command
+// npx prisma migrate dev --schema ./prisma 
