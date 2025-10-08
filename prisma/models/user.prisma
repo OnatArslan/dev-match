@@ -3,8 +3,5 @@ model User {
   email   String   @unique
   name    String?
   posts   Post[]
-  profile Profile?
-  test String
-  test2 String[]
-  test3 String[]
+  profile Profile? @relation("userProfile")
 }
