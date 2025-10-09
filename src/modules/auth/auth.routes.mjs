@@ -7,4 +7,3 @@ router.get(`/hello`, async (req, res, next) => {
     status: `success at auth/hello test`,
   });
 });
-e;
