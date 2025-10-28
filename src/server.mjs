@@ -46,7 +46,7 @@ async function shutdown(signal) {
   // Yeni bağlantı alma
   server.close((closeErr) => {
     if (closeErr) {
-      logger.error(`Error during server.close(): ${closeErr.message}`, { stack: closeErr.stack });                
+      logger.error(`Error during server.close(): ${closeErr.message}`, { stack: closeErr.stack });
       process.exit(1);
     }
     logger.info('HTTP server closed. Bye 👋');
