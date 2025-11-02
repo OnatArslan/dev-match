@@ -23,10 +23,10 @@ server.listen(PORT, () => {
       chalk.green.bold('🚀 DevMatch server is up and running!') +
         '\n' +
         chalk.cyan(`   ➜  Local:   `) +
-        chalk.white(`http://localhost:${PORT}/`) +
+        chalk.white(`http://localhost:${PORT}/api/v1`) +
         '\n' +
         chalk.cyan(`   ➜  Health:  `) +
-        chalk.white(`http://localhost:${PORT}/health`) +
+        chalk.white(`http://localhost:${PORT}/api/v1/health`) +
         '\n' +
         chalk.gray(`   (Press CTRL+C to quit)\n`),
     );

@@ -96,12 +96,16 @@ app.use(
 );
 
 /* ─────────────── Healthcheck ─────────────── */
+
 app.get(`/api/v1/health`, (_req, res) => {
-  res.status(StatusCodes.OK).json({ status: 'ok', message: `healthcheck passed` });
+  res.status(StatusCodes.OK).json({ status: `OK`, message: `Healthcheck passed...` });
 });
 
-app.get(`/api/v1`, (req, res, next) => {
-  res.status(StatusCodes.OK).json({ status: `ok`, message: `Init route` });
+app.get(`/api/v1`, (_req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    message: 'Welcome to DevMatch API 👋',
+  });
 });
 
 /* ─────────────── (Import Routers Here) ─────────────── */
