@@ -96,16 +96,21 @@ app.use(
 );
 
 /* ─────────────── Healthcheck ─────────────── */
-app.get('/health', (_req, res) => {
-  res.status(StatusCodes.OK).json({ status: 'ok' });
+app.get(`/api/v1/health`, (_req, res) => {
+  res.status(StatusCodes.OK).json({ status: 'ok', message: `healthcheck passed` });
+});
+
+app.get(`/api/v1`, (req, res, next) => {
+  res.status(StatusCodes.OK).json({ status: `ok`, message: `Init route` });
 });
 
 /* ─────────────── (Import Routers Here) ─────────────── */
 import { userRouter } from './modules/user/index.mjs';
 import { authRouter } from './modules/auth/index.mjs';
+
 /* ─────────────── (Using Routers) ─────────────── */
-app.use('/user', userRouter);
-app.use('/auth', authRouter);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/auth', authRouter);
 
 /* ─────────────── Not Found & Error ─────────────── */
 app.use(notFoundHandler); // eşleşmeyen tüm istekler buraya düşer
