@@ -1,0 +1,28 @@
+model User {
+    id String @id @default(uuid())
+    email String  @unique // also index
+    username String? @unique // also index
+    passwordHash String
+
+    status UserStatus @default(ACTIVE)
+    role Role @default(CLIENT)
+    verifiedAt DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@index([status])
+    @@index([createdAt])
+    
+}
+
+enum Role {
+    CLIENT
+    FREELANCER
+    ADMIN
+}
+
+enum UserStatus {
+    ACTIVE
+    INACTIVE
+    BANNED
+}
