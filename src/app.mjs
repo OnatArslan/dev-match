@@ -9,9 +9,14 @@ import crypto from 'node:crypto';
 import { StatusCodes } from 'http-status-codes';
 import cookieParser from 'cookie-parser';
 
+/** Import helpers here */
 import logger from './lib/logger.mjs';
 import notFoundHandler from './middlewares/not-found.mjs';
 import errorHandler from './middlewares/error-handler.mjs';
+
+/* ─────────────── (Import Routers Here) ─────────────── */
+import { userRouter } from './modules/user/index.mjs';
+import { authRouter } from './modules/auth/index.mjs';
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
@@ -74,7 +79,7 @@ const morganStream = { write: (msg) => logger.info(msg.trim(), { channel: 'http'
 app.use(
   morgan(isProd ? `combined` : `dev`, {
     stream: morganStream,
-    skip: (req) => req.path === '/health',
+    skip: (req) => req.path === '/api/v1/health',
   }),
 );
 
@@ -107,10 +112,6 @@ app.get(`/api/v1`, (_req, res) => {
     message: 'Welcome to DevMatch API 👋',
   });
 });
-
-/* ─────────────── (Import Routers Here) ─────────────── */
-import { userRouter } from './modules/user/index.mjs';
-import { authRouter } from './modules/auth/index.mjs';
 
 /* ─────────────── (Using Routers) ─────────────── */
 app.use('/api/v1/user', userRouter);

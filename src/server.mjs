@@ -14,13 +14,13 @@ const server = http.createServer(app);
 
 // Dinleme
 server.listen(PORT, () => {
-  logger.info(`🚀 Server listening on port ${PORT}`, {
+  logger.info(`Server listening on port ${PORT}`, {
     env: ENV,
     port: PORT,
   });
   if (process.env.NODE_ENV !== 'production') {
     console.log(
-      chalk.green.bold('🚀 DevMatch server is up and running!') +
+      chalk.green.bold('DevMatch server is up and running!') +
         '\n' +
         chalk.cyan(`   ➜  Local:   `) +
         chalk.white(`http://localhost:${PORT}/api/v1`) +

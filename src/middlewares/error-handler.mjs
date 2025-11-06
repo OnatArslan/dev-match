@@ -12,8 +12,13 @@ function errorHandler(err, req, res, next) {
   }
 
   // Eğer err.message boşsa, HTTP reason phrase kullan
-  const message =
-    !isProd || status < 500 ? err.message || getReasonPhrase(status) : 'Internal Server Error';
+  let message;
+  try {
+    message =
+      !isProd || status < 500 ? err.message || getReasonPhrase(status) : 'Internal Server Error';
+  } catch (err) {
+    message = `UNKNOWN_ERROR`;
+  }
 
   const payload = {
     message,
@@ -21,7 +26,6 @@ function errorHandler(err, req, res, next) {
     path: req.originalUrl,
     method: req.method,
   };
-  if (status === 404) err.stack = ``;
   if (!isProd) payload.stack = err.stack;
 
   logger.error(`${req.method} ${req.originalUrl} -> ${status} ${message}`, {
