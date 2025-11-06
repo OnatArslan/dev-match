@@ -3,10 +3,11 @@ model User {
     email String  @unique // also index
     username String? @unique // also index
     passwordHash String
-
+    
     status UserStatus @default(ACTIVE)
     role Role @default(CLIENT)
     verifiedAt DateTime?
+    lastLoginAt DateTime?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

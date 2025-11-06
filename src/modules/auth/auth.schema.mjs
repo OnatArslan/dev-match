@@ -1,7 +1,37 @@
 import * as z from 'zod';
 
-const registerSchema = z.object({
-  name: z.string(),
-});
+const usernameRegex = /^[a-z][a-z0-9_]*$/;
 
-// We can use like this
+const strongPassword =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/`]).{8,72}$/;
+
+export const registerUserSchema = z
+  .object({
+    email: z.email(`Invalid email format is given!!!`).trim().min(3),
+
+    username: z
+      .string()
+      .trim()
+      .min(3, 'Username must be at least 3 characters')
+      .max(30, 'Username must be at most 30 characters')
+      .regex(usernameRegex, 'Only lowercase letters, digits, underscores; must start with a letter')
+      .optional(),
+    // You store passwordHash in DB; we validate plaintext here.
+
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .max(72, 'Password must be at most 72 characters')
+      .regex(strongPassword, 'Password must include lowercase, uppercase, digit, and symbol'),
+
+    passwordConfirm: z.string().min(1, 'Please confirm your password'),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.passwordConfirm) {
+      ctx.addIssue({
+        code: `custom`,
+        path: ['passwordConfirm'],
+        message: `Passwords do not match`,
+      });
+    }
+  });
