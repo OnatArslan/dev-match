@@ -30,8 +30,17 @@ export const registerUserSchema = z
     if (data.password !== data.passwordConfirm) {
       ctx.addIssue({
         code: `custom`,
-        path: ['passwordConfirm'],
-        message: `Passwords do not match`,
+        path: ['passwordConfirm', `password`],
+        message: `Passwords are not equal`,
+        input: data.passwordConfirm,
       });
     }
   });
+
+const validData = registerUserSchema.parse({
+  email: `onat@gmail.com`,
+  password: `123456789`,
+  passwordConfirm: `1234567890`,
+});
+
+console.log(validData);
