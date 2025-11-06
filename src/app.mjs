@@ -15,7 +15,6 @@ import notFoundHandler from './middlewares/not-found.mjs';
 import errorHandler from './middlewares/error-handler.mjs';
 
 /* ─────────────── (Import Routers Here) ─────────────── */
-import { userRouter } from './modules/user/index.mjs';
 import { authRouter } from './modules/auth/index.mjs';
 
 const app = express();
@@ -109,12 +108,11 @@ app.get(`/api/v1/health`, (_req, res) => {
 app.get(`/api/v1`, (_req, res) => {
   res.status(200).json({
     status: 'ok',
-    message: 'Welcome to DevMatch API 👋',
+    message: 'DevMatch API base page!',
   });
 });
 
 /* ─────────────── (Using Routers) ─────────────── */
-app.use('/api/v1/user', userRouter);
 app.use('/api/v1/auth', authRouter);
 
 /* ─────────────── Not Found & Error ─────────────── */
