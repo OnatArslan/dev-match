@@ -1,16 +1,16 @@
 import jwt from 'jsonwebtoken';
-import { AppError } from '../lib/errors.mjs';
+import { AppError } from '../../lib/errors.mjs';
 
 /**
  * Create access token for a given user
  * @param {object} userData - must contain id (and optionally role/email)
  * @returns {string} signed JWT token
  */
-export function createAccessToken(userData) {
+export function createAccessToken(validUserData) {
   try {
     // JWT sign
     const token = jwt.sign(
-      { id: userData.id }, // payload
+      { id: validUserData.id }, // payload
       process.env.JWT_SECRET_KEY, // secret veya private key (RS256 için PEM)
       {
         algorithm: `HS256`,
