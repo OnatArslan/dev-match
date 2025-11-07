@@ -1,18 +1,25 @@
 model User {
     id String @id @default(uuid())
-    email String  @unique // also index
-    username String? @unique // also index
+    email String  @unique @db.Citext // also index // Citext case insensitive text
+    username String? @unique @db.Citext // also index
+    // Auth
     passwordHash String
-    
+    passwordChangedAt DateTime?
+
+
     status UserStatus @default(ACTIVE)
     role Role @default(CLIENT)
+
     verifiedAt DateTime?
     lastLoginAt DateTime?
 
+    deletedAt DateTime?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     @@index([status])
     @@index([createdAt])
+    @@index([updatedAt])
+    @@index([deletedAt])
     
 }
 

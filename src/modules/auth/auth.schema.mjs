@@ -5,13 +5,16 @@ const usernameRegex = /^[a-z][a-z0-9_]*$/;
 const strongPassword =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/`]).{8,72}$/;
 
+const RESERVED_USERNAMES = new Set(['admin', 'root', 'support', 'api']);
+
 export const registerUserSchema = z
   .object({
-    email: z.email(`Invalid email format is given!!!`).trim().min(3),
+    email: z.email(`Invalid email format is given!!!`).trim().toLowerCase().min(3),
 
     username: z
       .string()
       .trim()
+      .lower()
       .min(3, 'Username must be at least 3 characters')
       .max(30, 'Username must be at most 30 characters')
       .regex(usernameRegex, 'Only lowercase letters, digits, underscores; must start with a letter')
@@ -20,7 +23,7 @@ export const registerUserSchema = z
 
     password: z
       .string()
-      .min(8, 'Password must be at least 8 characters')
+      .min(10, 'Password must be at least 8 characters')
       .max(72, 'Password must be at most 72 characters')
       .regex(strongPassword, 'Password must include lowercase, uppercase, digit, and symbol'),
 
@@ -30,9 +33,17 @@ export const registerUserSchema = z
     if (data.password !== data.passwordConfirm) {
       ctx.addIssue({
         code: `custom`,
-        path: ['passwordConfirm', `password`],
+        path: ['passwordConfirm'],
         message: `Passwords are not equal`,
         input: data.passwordConfirm,
+      });
+    }
+
+    if (data.username && RESERVED_USERNAMES.has(data.username)) {
+      ctx.addIssue({
+        code: `custom`,
+        path: [`username`],
+        message: `This username is reserved`,
       });
     }
   });
