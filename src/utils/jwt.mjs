@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { AppError } from '../../lib/errors.mjs';
+import { AppError } from '../lib/errors.mjs';
 
 /**
  * Create access token for a given user

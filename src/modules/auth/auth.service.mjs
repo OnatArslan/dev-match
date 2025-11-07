@@ -14,8 +14,10 @@ export async function registerService({ email, password, username = null }) {
     },
     select: {
       id: true,
-      username: true,
       email: true,
+      username: true,
+      role: true,
+      status: true,
       createdAt: true,
     },
   });
