@@ -6,15 +6,15 @@ import { AppError } from '../../lib/errors.mjs';
  * @param {object} userData - must contain id (and optionally role/email)
  * @returns {string} signed JWT token
  */
-export function createAccessToken(validUserData) {
+export function createAccessToken({ id, email }) {
   try {
     // JWT sign
     const token = jwt.sign(
-      { id: validUserData.id }, // payload
+      { id: id, email: email }, // payload
       process.env.JWT_SECRET_KEY, // secret veya private key (RS256 için PEM)
       {
         algorithm: `HS256`,
-        expiresIn: '1d', //
+        expiresIn: 60 * 60 * 24, // 24 hour
         issuer: 'devmatch-auth',
         audience: 'devmatch-users',
       },

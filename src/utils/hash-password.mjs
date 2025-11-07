@@ -12,6 +12,7 @@ export async function hashPassword(rawPassword) {
     });
     return hash;
   } catch (err) {
+    console.log(err.message);
     throw new AppError(`Password hashing failed!`, 500);
   }
 }
