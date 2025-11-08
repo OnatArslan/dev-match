@@ -1,4 +1,4 @@
-import { registerService } from './auth.service.mjs';
+import { getAllUsersService, registerService } from './auth.service.mjs';
 import { registerUserSchema } from './auth.schema.mjs';
 
 export async function registerController(req, res, next) {
@@ -26,6 +26,18 @@ export async function registerController(req, res, next) {
     message: `registered successfully`,
     data: {
       user,
+    },
+  });
+}
+
+export async function getAllUserController(req, res, next) {
+  const users = await getAllUsersService();
+
+  res.status(200).json({
+    status: `ok`,
+    message: `Listed All Users`,
+    data: {
+      users,
     },
   });
 }

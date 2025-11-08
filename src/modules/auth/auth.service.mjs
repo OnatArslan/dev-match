@@ -1,16 +1,38 @@
 import { hashPassword } from '../../utils/hash-password.mjs';
 import { createAccessToken } from '../../utils/jwt.mjs';
 import { prisma } from '../../lib/db.mjs';
+import { AppError } from '../../lib/errors.mjs';
 
 export async function registerService({ email, password, username = null }) {
   const hash = await hashPassword(password);
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: email,
+        username: username,
+        passwordHash: hash,
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        status: true,
+        createdAt: true,
+      },
+    });
 
-  const user = await prisma.user.create({
-    data: {
-      email: email,
-      username: username,
-      passwordHash: hash,
-    },
+    const accessToken = createAccessToken(user);
+    return { user, accessToken };
+  } catch (err) {
+    console.log(err);
+    if (err.code === `P2002`) throw new AppError(`Email or username was taken.`);
+    throw new AppError(`Token creation or register failed`);
+  }
+}
+
+export async function getAllUsersService() {
+  const users = await prisma.user.findMany({
     select: {
       id: true,
       email: true,
@@ -19,9 +41,8 @@ export async function registerService({ email, password, username = null }) {
       status: true,
       createdAt: true,
     },
+    take: 10,
   });
 
-  const accessToken = createAccessToken(user);
-
-  return { user, accessToken };
+  return users;
 }
