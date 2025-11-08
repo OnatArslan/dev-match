@@ -1,8 +1,8 @@
 import * as argon2 from 'argon2';
 import { AppError } from '../lib/errors.mjs';
 
+if (!process.env.PASSWORD_PEPPER) throw new AppError(`Password Pepper Missing`, 500);
 const pepper = process.env.PASSWORD_PEPPER;
-if (!pepper) throw new AppError(`Password Pepper Missing`, 500);
 const bufferPepper = Buffer.from(pepper, `utf-8`);
 
 const ARGON2_OPTS = {

@@ -2,7 +2,6 @@ import { hashPassword } from '../../utils/hash-password.mjs';
 import { createAccessToken } from '../../utils/jwt.mjs';
 import { prisma } from '../../lib/db.mjs';
 
-// TODO destruct validUserData for safety
 export async function registerService({ email, password, username = null }) {
   const hash = await hashPassword(password);
 
@@ -22,7 +21,7 @@ export async function registerService({ email, password, username = null }) {
     },
   });
 
-  const accessToken = createAccessToken(user.id);
+  const accessToken = createAccessToken(user);
 
   return { user, accessToken };
 }

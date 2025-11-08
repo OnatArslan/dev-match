@@ -1,7 +1,7 @@
 model User {
     id String @id @default(uuid())
-    email String  @unique @db.Citext // also index // Citext case insensitive text
-    username String? @unique @db.Citext // also index
+    email String  @unique  // also index // Citext case insensitive text
+    username String? @unique  // also index
     // Auth
     passwordHash String
     passwordChangedAt DateTime?

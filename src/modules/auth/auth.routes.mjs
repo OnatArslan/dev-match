@@ -4,4 +4,4 @@ import { registerController } from './auth.controller.mjs';
 
 export const router = Router();
 
-router.post(`/`, registerController);
+router.post(`/register`, registerController);

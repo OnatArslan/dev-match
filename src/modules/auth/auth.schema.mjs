@@ -14,7 +14,7 @@ export const registerUserSchema = z
     username: z
       .string()
       .trim()
-      .lower()
+      .toLowerCase()
       .min(3, 'Username must be at least 3 characters')
       .max(30, 'Username must be at most 30 characters')
       .regex(usernameRegex, 'Only lowercase letters, digits, underscores; must start with a letter')
@@ -23,7 +23,7 @@ export const registerUserSchema = z
 
     password: z
       .string()
-      .min(10, 'Password must be at least 8 characters')
+      .min(10, 'Password must be at least 10 characters')
       .max(72, 'Password must be at most 72 characters')
       .regex(strongPassword, 'Password must include lowercase, uppercase, digit, and symbol'),
 
@@ -47,11 +47,3 @@ export const registerUserSchema = z
       });
     }
   });
-
-const validData = registerUserSchema.parse({
-  email: `onat@gmail.com`,
-  password: `123456789`,
-  passwordConfirm: `1234567890`,
-});
-
-console.log(validData);
