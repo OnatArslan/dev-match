@@ -26,6 +26,7 @@ export async function registerController(req, res, next) {
     message: `registered successfully`,
     data: {
       user,
+      accessToken,
     },
   });
 }
