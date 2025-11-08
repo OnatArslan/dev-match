@@ -30,19 +30,3 @@ export async function registerService({ email, password, username = null }) {
     throw new AppError(`Token creation or register failed`);
   }
 }
-
-export async function getAllUsersService() {
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      email: true,
-      username: true,
-      role: true,
-      status: true,
-      createdAt: true,
-    },
-    take: 10,
-  });
-
-  return users;
-}

@@ -1,4 +1,4 @@
-import { getAllUsersService, registerService } from './auth.service.mjs';
+import { registerService } from './auth.service.mjs';
 import { registerUserSchema } from './auth.schema.mjs';
 
 export async function registerController(req, res, next) {
