@@ -29,15 +29,3 @@ export async function registerController(req, res, next) {
     },
   });
 }
-
-export async function getAllUserController(req, res, next) {
-  const users = await getAllUsersService();
-
-  res.status(200).json({
-    status: `ok`,
-    message: `Listed All Users`,
-    data: {
-      users,
-    },
-  });
-}

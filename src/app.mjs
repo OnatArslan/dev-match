@@ -15,6 +15,7 @@ import errorHandler from './middlewares/error-handler.mjs';
 
 /* ─────────────── (Import Routers Here) ─────────────── */
 import { authRouter } from './modules/auth/index.mjs';
+import { userRouter } from './modules/user/index.mjs';
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
@@ -113,6 +114,7 @@ app.get(`/api/v1`, (_req, res) => {
 
 /* ─────────────── (Using Routers) ─────────────── */
 app.use('/api/v1/auth', authRouter);
+app.use(`/api/v1/user`, userRouter);
 
 /* ─────────────── Not Found & Error ─────────────── */
 app.use(notFoundHandler); // eşleşmeyen tüm istekler buraya düşer
