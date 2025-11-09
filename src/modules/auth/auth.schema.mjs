@@ -47,3 +47,12 @@ export const registerUserSchema = z
       });
     }
   });
+
+export const loginSchema = z.object({
+  email: z.email(`Invalid email format is given!!!`).trim().toLowerCase().min(3),
+  password: z
+    .string()
+    .min(10, 'Password must be at least 10 characters')
+    .max(72, 'Password must be at most 72 characters')
+    .regex(strongPassword, 'Password must include lowercase, uppercase, digit, and symbol'),
+});

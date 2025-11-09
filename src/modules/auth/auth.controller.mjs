@@ -1,5 +1,5 @@
-import { registerService } from './auth.service.mjs';
-import { registerUserSchema } from './auth.schema.mjs';
+import { registerService, loginService } from './auth.service.mjs';
+import { registerUserSchema, loginSchema } from './auth.schema.mjs';
 
 export async function registerController(req, res, next) {
   // TODO validate request with zod
@@ -13,13 +13,7 @@ export async function registerController(req, res, next) {
   console.log(user);
   // TODO check is password valid and secure
   if (!user && !accessToken) throw new AppError(`User creation or token creation is not valid`);
-  // TODO send response cookies (token)
-  res.cookie('accessToken', accessToken, {
-    httpOnly: true, // JS tarafından erişilemez (XSS koruması)
-    secure: true, // Sadece HTTPS bağlantılarında gönderilir
-    sameSite: 'strict', // CSRF’e karşı koruma
-    maxAge: 24 * 60 * 60 * 1000, // 1 gün (ms cinsinden)             // Cookie’nin geçerli olduğu path
-  });
+
   // TODO send response json data
   res.status(200).json({
     status: `Ok`,
@@ -27,6 +21,24 @@ export async function registerController(req, res, next) {
     data: {
       user,
       accessToken,
+    },
+  });
+}
+
+export async function loginController(req, res, next) {
+  // TODO 1: Validate incoming credentials (email/username & password) with Zod schema
+  const { email, password } = req.body;
+  const credentials = loginSchema.parse({ email, password });
+
+  // TODO 2: Fetch user from database by unique field (email or username) via Prisma
+  const { updatedValidUser: currentUser, accessToken } = await loginService(credentials);
+
+  res.status(200).json({
+    status: `ok`,
+    message: 'login successfully',
+    data: {
+      accessToken,
+      currentUser,
     },
   });
 }
