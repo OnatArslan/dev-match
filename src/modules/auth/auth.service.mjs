@@ -68,3 +68,5 @@ export async function loginService({ email, password }) {
 
   return { updatedValidUser, accessToken };
 }
+
+export function logOutService() {}
