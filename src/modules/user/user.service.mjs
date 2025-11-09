@@ -9,6 +9,7 @@ export async function getAllUsersService() {
       role: true,
       status: true,
       createdAt: true,
+      refreshToken: true,
     },
     take: 10,
   });
