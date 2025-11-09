@@ -9,24 +9,13 @@ if (!pepperEnv) {
 // Cache pepper buffer at module load
 const pepperBuffer = Buffer.from(pepperEnv, 'utf-8');
 
-const ARGON2_OPTS = {
-  type: argon2.argon2id,
-  timeCost: 3,
-  memoryCost: 65536, // 64 MiB
-  parallelism: 1,
-  hashLength: 32,
-  saltLength: 16,
-};
-
-export async function hashPassword(rawPassword) {
+export async function verifyPassword(rawPassword, hash) {
   try {
-    const hash = await argon2.hash(rawPassword, {
-      ...ARGON2_OPTS,
+    return await argon2.verify(hash, rawPassword, {
       secret: pepperBuffer,
     });
-    return hash;
   } catch (err) {
-    console.error(err.message);
-    throw new AppError(`Password hashing failed.`, 500);
+    console.error(err);
+    throw new AppError(`Internal error on password validation!`);
   }
 }

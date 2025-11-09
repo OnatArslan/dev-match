@@ -2,6 +2,7 @@ import { hashPassword } from '../../utils/hash-password.mjs';
 import { createAccessToken } from '../../utils/jwt.mjs';
 import { prisma } from '../../lib/db.mjs';
 import { AppError } from '../../lib/errors.mjs';
+import { verifyPassword } from '../../utils/verify-password.mjs';
 
 export async function registerService({ email, password, username = null }) {
   const hash = await hashPassword(password);
@@ -29,4 +30,41 @@ export async function registerService({ email, password, username = null }) {
     if (err.code === `P2002`) throw new AppError(`Email or username was taken.`);
     throw new AppError(`Token creation or register failed`);
   }
+}
+
+export async function loginService({ email, password }) {
+  // TODO 1️⃣ Fetch user by email or username (select id, passwordHash, status, verifiedAt, role)
+  let user;
+  try {
+    user = await prisma.user.findFirstOrThrow({
+      where: {
+        email: email,
+        status: `ACTIVE`,
+        role: {
+          not: `ADMIN`,
+        },
+        deletedAt: null,
+      },
+    });
+  } catch (err) {
+    if (err.code === `P2025`) throw new AppError('Invalid Credentials.');
+    throw new AppError(`Something went wrong.`);
+  }
+  // TODO 3️⃣ Verify password via verifyPassword(rawPassword, user.passwordHash) → throw AppError on mismatch
+  const check = await verifyPassword(password, user.passwordHash);
+  if (!check) throw new AppError(`Invalid credentials`);
+  // TODO 4️⃣ If password is valid → update lastLoginAt
+  const updatedValidUser = await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      lastLoginAt: new Date(),
+    },
+    omit: { passwordHash: true },
+  });
+  // TODO 5️⃣ Generate and persist tokens (access + refresh), create/update session record, return login payload
+  const accessToken = createAccessToken(updatedValidUser);
+
+  return { updatedValidUser, accessToken };
 }

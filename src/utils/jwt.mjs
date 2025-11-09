@@ -26,7 +26,7 @@ export function createAccessToken({ id, email }) {
     return token; // token string olarak döner
   } catch (err) {
     // jsonwebtoken bir hata atarsa
-    console.log(err);
+    console.error(err);
     throw new AppError(`Failed to create access token.`, 500);
   }
 }
