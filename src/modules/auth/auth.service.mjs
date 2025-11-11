@@ -53,7 +53,7 @@ export async function registerService({ email, password, username = null }) {
           expiresAt: expiresAt,
         },
       });
-      return { updatedUser, accessToken };
+      return { updatedUser, accessToken, refreshToken };
     });
 
     return result;
@@ -144,10 +144,22 @@ export async function loginService({ email, password }) {
       throw new AppError(`Refresh token creation failed`);
     }
 
-    return { accessToken, updatedValidUser };
+    return { accessToken, updatedValidUser, refreshToken };
   });
 
   return result;
 }
 
-export function logOutService() {}
+export async function refreshTokenService(req) {
+  const refreshToken = req.cookie?.refreshToken;
+  if (!refreshToken || refreshToken === ' ') {
+    throw new AppError(`Refresh token is missing`);
+  }
+
+  const result = await prisma.$transaction(async (tx) => {
+    // TODO get refresh token (prisma)
+    // get valid fields
+    // TODO get user
+    // hide hash
+  });
+}
