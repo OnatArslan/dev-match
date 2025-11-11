@@ -1,4 +1,4 @@
-import { registerService, loginService } from './auth.service.mjs';
+import { registerService, loginService, refreshTokenService } from './auth.service.mjs';
 import { registerUserSchema, loginSchema } from './auth.schema.mjs';
 import dayjs from 'dayjs';
 
@@ -6,7 +6,6 @@ const cookieOptions = {
   httpOnly: true, // JS erişemez → XSS koruması
   secure: true, // sadece HTTPS'te gönderilir
   sameSite: 'strict', // CSRF önler (cross-site cookie gitmez)
-  path: '/auth/refresh', // sadece refresh endpoint’inde gönderilir
   expires: dayjs().add(30, `days`).toDate(), // DB'deki expiresAt ile aynı tarih
   priority: 'high', // bazı tarayıcılarda öncelik belirtir (opsiyonel ama iyi)
 };
@@ -18,9 +17,6 @@ export async function registerController(req, res, next) {
 
   // TODO create user and token
   const { accessToken, user, refreshToken } = await registerService(validData);
-  // TODO check user and token
-  console.log(accessToken);
-  console.log(user);
   // TODO check is password valid and secure
   if (!user && !accessToken) throw new AppError(`User creation or token creation is not valid`);
 
@@ -68,6 +64,7 @@ export async function loginController(req, res, next) {
 // TODO refresh controller
 export async function refreshController(req, res, next) {
   const raw = req.cookies?.refreshToken;
+  console.log(req.cookies);
   const { accessToken, user } = await refreshTokenService({ raw });
 
   return res.status(200).json({
