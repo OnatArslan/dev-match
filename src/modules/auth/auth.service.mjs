@@ -150,16 +150,37 @@ export async function loginService({ email, password }) {
   return result;
 }
 
-export async function refreshTokenService(req) {
-  const refreshToken = req.cookie?.refreshToken;
-  if (!refreshToken || refreshToken === ' ') {
-    throw new AppError(`Refresh token is missing`);
-  }
+export async function refreshTokenService({ raw }) {
+  const refreshToken = typeof raw === 'string' ? raw.trim() : '';
+  if (!refreshToken) throw new AppError('Refresh token is missing', 401);
 
-  const result = await prisma.$transaction(async (tx) => {
-    // TODO get refresh token (prisma)
-    // get valid fields
-    // TODO get user
-    // hide hash
+  const now = new Date();
+  const tokenHash = createHash('sha256').update(refreshToken).digest('hex');
+
+  const record = await prisma.refreshToken.findFirst({
+    where: {
+      tokenHash,
+      revoked: false,
+      expiresAt: { gt: now },
+    },
+    include: {
+      user: {
+        select: { id: true, email: true, status: true, role: true },
+      },
+    },
   });
+
+  if (!record) throw new AppError('Invalid or expired refresh token', 403);
+  if (!record.user) throw new AppError('User tied to refresh token is missing', 403);
+  if (record.user.status !== 'ACTIVE') throw new AppError('User not authorized', 403);
+
+  const accessToken = createAccessToken({
+    id: record.user.id,
+    email: record.user.email,
+    role: record.user.role,
+  });
+  if (!accessToken) throw new AppError('Access token creation failed', 500);
+
+  const user = { id: record.user.id, email: record.user.email };
+  return { accessToken, user };
 }

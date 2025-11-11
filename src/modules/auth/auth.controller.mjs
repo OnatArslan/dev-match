@@ -66,3 +66,16 @@ export async function loginController(req, res, next) {
 }
 
 // TODO refresh controller
+export async function refreshController(req, res, next) {
+  const raw = req.cookies?.refreshToken;
+  const { accessToken, user } = await refreshTokenService({ raw });
+
+  return res.status(200).json({
+    success: true,
+    message: 'OK',
+    data: {
+      accessToken,
+      user,
+    },
+  });
+}
