@@ -60,7 +60,7 @@ export async function loginController(req, res, next) {
     },
   });
 }
-
+console.log(`hello world`);
 // TODO refresh controller
 export async function refreshController(req, res, next) {
   const raw = req.cookies?.refreshToken;
