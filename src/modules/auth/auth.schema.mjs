@@ -9,7 +9,7 @@ const RESERVED_USERNAMES = new Set(['admin', 'root', 'support', 'api']);
 
 export const registerUserSchema = z
   .object({
-    email: z.email(`Invalid email format is given!!!`).trim().toLowerCase().min(3),
+    email: z.email(`Invalid email format is given!!!`).trim().toLowerCase(),
 
     username: z
       .string()
@@ -19,8 +19,8 @@ export const registerUserSchema = z
       .max(30, 'Username must be at most 30 characters')
       .regex(usernameRegex, 'Only lowercase letters, digits, underscores; must start with a letter')
       .optional(),
-    // You store passwordHash in DB; we validate plaintext here.
 
+    // You store passwordHash in DB; we validate plaintext here.
     password: z
       .string()
       .min(10, 'Password must be at least 10 characters')
@@ -29,7 +29,9 @@ export const registerUserSchema = z
 
     passwordConfirm: z.string().min(1, 'Please confirm your password'),
   })
+
   .superRefine((data, ctx) => {
+    // Check password confirmation correct
     if (data.password !== data.passwordConfirm) {
       ctx.addIssue({
         code: `custom`,
@@ -39,6 +41,7 @@ export const registerUserSchema = z
       });
     }
 
+    // Check if username is reserved username
     if (data.username && RESERVED_USERNAMES.has(data.username)) {
       ctx.addIssue({
         code: `custom`,
