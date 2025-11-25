@@ -3,7 +3,7 @@ import * as z from 'zod';
 const usernameRegex = /^[a-z][a-z0-9_]*$/;
 
 const strongPassword =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/`]).{8,72}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0,9])(?=.*[~!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/`]).{10,72}$/;
 
 const RESERVED_USERNAMES = new Set(['admin', 'root', 'support', 'api']);
 
@@ -51,11 +51,8 @@ export const registerUserSchema = z
     }
   });
 
+// No need for good validation in here
 export const loginSchema = z.object({
-  email: z.email(`Invalid email format is given!!!`).trim().toLowerCase().min(3),
-  password: z
-    .string()
-    .min(10, 'Password must be at least 10 characters')
-    .max(72, 'Password must be at most 72 characters')
-    .regex(strongPassword, 'Password must include lowercase, uppercase, digit, and symbol'),
+  email: z.string().trim().toLowerCase().min(1, 'Email is required'),
+  password: z.string().min(1, 'Password is required'),
 });
